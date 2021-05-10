@@ -1,0 +1,1561 @@
+﻿<!DOCTYPE html>
+<html lang="ru_RU">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pigeon Enterprise Messenger</title>
+    <link rel="stylesheet" href="https://stackedit.io/style.css"/>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            background: #eee url(../iisdf_icon.svg);
+            background-repeat: no-repeat;
+            background-position: right -150px bottom -150px;
+            background-size: 800px;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+
+<body class="stackedit">
+<div class="stackedit__left">
+    <div class="stackedit__toc">
+
+        <ul>
+            <li><a href="#о-документе">О документе</a></li>
+            <li><a href="#правовая-информация">Правовая информация</a></li>
+            <li><a href="#roadmap">Roadmap</a></li>
+            <li><a href="#база-данных">База данных</a>
+                <ul>
+                    <li><a href="#user">User</a></li>
+                    <li><a href="#userstatistics">UserStatistics</a></li>
+                    <li><a href="#conversation">Conversation</a></li>
+                    <li><a href="#conversationmember">ConversationMember</a></li>
+                    <li><a href="#attachment">Attachment</a></li>
+                    <li><a href="#photo">Photo</a></li>
+                    <li><a href="#invitelink">InviteLink</a></li>
+                    <li><a href="#shortlink">ShortLink</a></li>
+                    <li><a href="#messageaction">MessageAction</a></li>
+                    <li><a href="#message">Message</a></li>
+                    <li><a href="#systemstatistics">SystemStatistics</a></li>
+                    <li><a href="#reportreason">ReportReason</a></li>
+                    <li><a href="#messagereport">MessageReport</a></li>
+                    <li><a href="#userreport">UserReport</a></li>
+                    <li><a href="#banrecord">BanRecord</a></li>
+                    <li><a href="#officialapp">OfficialApp</a></li>
+                </ul>
+            </li>
+            <li><a href="#отношения">Отношения</a>
+                <ul>
+                    <li><a href="#контакты">Контакты</a></li>
+                    <li><a href="#чёрный-список">Чёрный список</a></li>
+                </ul>
+            </li>
+            <li><a href="#битовые-маски">Битовые маски</a>
+                <ul>
+                    <li><a href="#маска-настроек-приватности-пользователя">Маска настроек приватности пользователя</a></li>
+                    <li><a href="#маска-настроек-доступа-пользователя-в-беседах">Маска настроек доступа пользователя в беседах</a></li>
+                </ul>
+            </li>
+            <li><a href="#структура-внутреннего-хранилища">Структура внутреннего хранилища</a></li>
+            <li><a href="#система-обработки-входных-файлов">Система обработки входных файлов</a>
+                <ul>
+                    <li><a href="#вложения-фотографии">Вложения-фотографии</a></li>
+                    <li><a href="#голосовые-сообщения">Голосовые сообщения</a></li>
+                    <li><a href="#вложения-документы">Вложения-документы</a></li>
+                    <li><a href="#фотографии-пользователей-и-обложек-бесед">Фотографии пользователей и обложек бесед</a></li>
+                </ul>
+            </li>
+            <li><a href="#о-системе-управления-сообщениями">О системе управления сообщениями</a>
+                <ul>
+                    <li><a href="#удаление">Удаление</a></li>
+                    <li><a href="#редактирование">Редактирование</a></li>
+                </ul>
+            </li>
+            <li><a href="#точки-доступа-к-api">Точки доступа к API</a>
+                <ul>
+                    <li><a href="#ошибки-при-использовании-api">Ошибки при использовании API</a></li>
+                    <li><a href="#авторизация">Авторизация</a></li>
+                    <li><a href="#регистрация">Регистрация</a></li>
+                    <li><a href="#пользователь">Пользователь</a></li>
+                    <li><a href="#контакты-1">Контакты</a></li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+</div>
+<div class="stackedit__right">
+    <div class="stackedit__html">
+        <p><img src="pigeon_logo.svg" alt="Pigeon Logo"></p>
+        <h1 id="о-документе">О документе</h1>
+        <p>Этот документ описывает бизнес-логику и внутреннюю работу веб-приложения Pigeon Enterprise Messenger.</p>
+        <h1 id="правовая-информация">Правовая информация</h1>
+        <p>Автор, разработчик, владелец прав и патента — <a href="https://vk.com/id242521347">Иван Петров</a> во главе <a href="https://vk.com/club179614880">Фонда развития информационных и интеллектуальных систем</a>. Все права защищены.</p>
+        <blockquote>
+            <p>Члены, акционеры, партнёры и дочерние компании Фонда развития информационных и интеллектуальных систем не имеют прав на продукт, если напрямую не поддерживают развитие продукта.</p>
+        </blockquote>
+        <h1 id="roadmap">Roadmap</h1>
+        <p>Основная дорожная карта реализации проекта. При невыполнении задачи в определённые сроки, задача переносится на следующий квартал с последующим смещением других задач.</p>
+        <ul>
+            <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Q4 2020. Базовый API спроектирован и создана оптимизированная архитектура базы данных</li>
+            <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Q1 2021. Система администрирования мессенджером.</li>
+            <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Q2 2021. Основной интерфейс на React + Material UI / VK UI</li>
+            <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Q3 2021. Бета-тестирование</li>
+            <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Q2 2022. Переход на мобильные устройства через React Native</li>
+            <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled=""> Q4 2022. Запуск платформы</li>
+        </ul>
+        <h1 id="база-данных">База данных</h1>
+        <p>Основные методы формирования базы данных.</p>
+        <p>Типы данных:</p>
+        <ul>
+            <li>integer — целое число (в реальной базе данных используется тип, минимально требуемый для реализации и сохранения памяти)</li>
+            <li>string — строка (используется число символов, минимальное требуемое для реализации и сохранения памяти)</li>
+            <li>bitmask — битовая маска, обычно выражается целым числом</li>
+            <li>timestamp — время, записанное в формате UNIX timestamp</li>
+            <li>boolean — логический тип данных</li>
+            <li>enum — представление типизированных данных в формате числа</li>
+        </ul>
+        <blockquote>
+            <p>Если рядом с типом данных указано “?”, то значение в БД может равняться <em>null</em></p>
+        </blockquote>
+        <p>Основные понятия:</p>
+        <ul>
+            <li>UUID — вариант сохранения уникальных идентификаторов в базе данных в формате сгенерированной строки на основе текущего времени, IP-адреса и других параметров</li>
+            <li>ID — вариант сохранения уникальных идентификаторов в базе данных путём инкрементации предыдущего идентификатора</li>
+            <li>Хешированая строка — строка сгенерированная методом преобразования примитивных типов данных при помощи криптографических методов</li>
+        </ul>
+        <h2 id="user">User</h2>
+        <p>Таблица: <em><strong>users</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>id</td>
+                <td>integer</td>
+                <td>Идентификатор пользователя</td>
+            </tr>
+            <tr>
+                <td>login</td>
+                <td>string</td>
+                <td>Логин</td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td>string</td>
+                <td>Захешированый пароль</td>
+            </tr>
+            <tr>
+                <td>first_name</td>
+                <td>string</td>
+                <td>Имя</td>
+            </tr>
+            <tr>
+                <td>last_name</td>
+                <td>string?</td>
+                <td>Фамилия</td>
+            </tr>
+            <tr>
+                <td>about</td>
+                <td>string?</td>
+                <td>Поле «О себе»</td>
+            </tr>
+            <tr>
+                <td>photo</td>
+                <td>string?</td>
+                <td>UUID фотографии профиля</td>
+            </tr>
+            <tr>
+                <td>privacy</td>
+                <td>bitmask</td>
+                <td>Параметры приватности пользователя<br>Определяются битовой маской</td>
+            </tr>
+            <tr>
+                <td>last_seen</td>
+                <td>timestamp?</td>
+                <td>Последнее появление в сети<br>Если <em>null</em>, то в данный момент онлайн</td>
+            </tr>
+            <tr>
+                <td>deactivated</td>
+                <td>enum?</td>
+                <td>Статус деактивации аккаунта<br><em>(deleted, banned)</em></td>
+            </tr>
+            <tr>
+                <td>service</td>
+                <td>boolean</td>
+                <td>Сервисный пользователь-бот?<br><em>По умолчанию: false</em></td>
+            </tr>
+            <tr>
+                <td>verified</td>
+                <td>boolean</td>
+                <td>Мы тоже хотим галочку<br><em>По умолчанию: false</em></td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="userstatistics">UserStatistics</h2>
+        <p>Таблица: <em><strong>user_statistics</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>id</td>
+                <td>integer</td>
+                <td>Идентификатор пользователя</td>
+            </tr>
+            <tr>
+                <td>total_messages</td>
+                <td>integer</td>
+                <td>Количество отправленных сообщений</td>
+            </tr>
+            <tr>
+                <td>attachments_sent</td>
+                <td>integer</td>
+                <td>Загружено вложений</td>
+            </tr>
+            <tr>
+                <td>bytes_sent</td>
+                <td>integer</td>
+                <td>Количество отправленных байт (вложения)</td>
+            </tr>
+            <tr>
+                <td>time_spent</td>
+                <td>integer</td>
+                <td>Количество проведённых секунд в онлайне</td>
+            </tr>
+            </tbody>
+        </table><h2 id="conversation">Conversation</h2>
+        <p>Таблица: <em><strong>conversations</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>uuid</td>
+                <td>string</td>
+                <td>UUID беседы</td>
+            </tr>
+            <tr>
+                <td>type</td>
+                <td>enum</td>
+                <td>Тип беседы<br><strong>Private</strong> — приватный чат<br><strong>Group</strong> — групповой чат<br><strong>Channel</strong> — канал<br><em>(private, group, channel)</em></td>
+            </tr>
+            <tr>
+                <td>owner</td>
+                <td>integer?</td>
+                <td>Идентификатор владельца<br>Если тип беседы <em>private</em>, то <em>null</em></td>
+            </tr>
+            <tr>
+                <td>photo</td>
+                <td>string?</td>
+                <td>UUID фотографии обложки<br>Если тип беседы <em>private</em>, то <em>null</em></td>
+            </tr>
+            <tr>
+                <td>title</td>
+                <td>string?</td>
+                <td>Название беседы<br>Если тип беседы <em>private</em>, то <em>null</em></td>
+            </tr>
+            <tr>
+                <td>deleted_at</td>
+                <td>timestamp</td>
+                <td>Дата удаления записи из БД</td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="conversationmember">ConversationMember</h2>
+        <p>Таблица: <em><strong>members</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>uuid</td>
+                <td>string</td>
+                <td>UUID беседы</td>
+            </tr>
+            <tr>
+                <td>user</td>
+                <td>integer</td>
+                <td>ID пользователя</td>
+            </tr>
+            <tr>
+                <td>access</td>
+                <td>bitmask</td>
+                <td>Права доступа<br>Определяются битовой маской</td>
+            </tr>
+            <tr>
+                <td>pinned</td>
+                <td>integer</td>
+                <td>Порядок в закреплённых диалогах<br>Если 0, то беседа не закреплена<br><em>По умолчанию: 0</em></td>
+            </tr>
+            <tr>
+                <td>notifications_disabled</td>
+                <td>boolean</td>
+                <td>Уведомления отключены?<br><em>По умолчанию: false</em></td>
+            </tr>
+            <tr>
+                <td>disabled_until</td>
+                <td>timestamp?</td>
+                <td>Уведомления отключены до<br>Если null, то навсегда</td>
+            </tr>
+            <tr>
+                <td>deleted_at</td>
+                <td>timestamp</td>
+                <td>Дата удаления записи из БД</td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="attachment">Attachment</h2>
+        <p>Таблица: <em><strong>attachments</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>uuid</td>
+                <td>string</td>
+                <td>UUID вложения</td>
+            </tr>
+            <tr>
+                <td>owner</td>
+                <td>integer</td>
+                <td>ID владельца</td>
+            </tr>
+            <tr>
+                <td>type</td>
+                <td>enum</td>
+                <td>Тип вложения<br><em>(photo, doc, voice)</em></td>
+            </tr>
+            <tr>
+                <td>ext</td>
+                <td>string</td>
+                <td>Расширение файла</td>
+            </tr>
+            <tr>
+                <td>size</td>
+                <td>integer</td>
+                <td>Размер файла (в байтах)</td>
+            </tr>
+            <tr>
+                <td>original_filename</td>
+                <td>string?</td>
+                <td>Оригинальное название файла</td>
+            </tr>
+            <tr>
+                <td>width</td>
+                <td>int?</td>
+                <td>Ширина изображения</td>
+            </tr>
+            <tr>
+                <td>height</td>
+                <td>int?</td>
+                <td>Высота изображения</td>
+            </tr>
+            <tr>
+                <td>length</td>
+                <td>int?</td>
+                <td>Длительность голосового сообщения</td>
+            </tr>
+            <tr>
+                <td>voice_graph</td>
+                <td>string?</td>
+                <td>Визуальное представление голосового сообщения<br>Пример: <em>12,34,35,30,5,8</em></td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="photo">Photo</h2>
+        <p>Таблица: <em><strong>photos</strong></em><br>
+            Используется для фотографий пользователей и обложек бесед</p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>uuid</td>
+                <td>string</td>
+                <td>UUID фотографии</td>
+            </tr>
+            <tr>
+                <td>type</td>
+                <td>enum</td>
+                <td>Тип фотографии<br><em>(profile, conversation)</em></td>
+            </tr>
+            <tr>
+                <td>sizes</td>
+                <td>string</td>
+                <td>Доступные размеры фотографии</td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="invitelink">InviteLink</h2>
+        <p>Таблица: <em><strong>invitelinks</strong></em><br>
+            Используется для создания и управления ссылками-приглашениями для бесед</p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>link</td>
+                <td>string</td>
+                <td>Ссылка</td>
+            </tr>
+            <tr>
+                <td>owner</td>
+                <td>integer</td>
+                <td>ID пользователя, создавшего ссылку</td>
+            </tr>
+            <tr>
+                <td>expires</td>
+                <td>timestamp?</td>
+                <td>Время истечения срока ссылки<br>Если <em>null</em>, то бесконечно</td>
+            </tr>
+            <tr>
+                <td>users</td>
+                <td>integer?</td>
+                <td>Максимальное количество присоединений<br>Если <em>null</em>, то бесконечно</td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="shortlink">ShortLink</h2>
+        <p>Таблица: <em><strong>shortlinks</strong></em><br>
+            Используется для глобальных доменов для пользователей и каналов</p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>domain</td>
+                <td>string</td>
+                <td>Домен</td>
+            </tr>
+            <tr>
+                <td>type</td>
+                <td>enum</td>
+                <td>Тип владельца<br><em>(user, channel)</em></td>
+            </tr>
+            <tr>
+                <td>owner</td>
+                <td>string|integer</td>
+                <td>Идентификатор владельца</td>
+            </tr>
+            </tbody>
+        </table><h2 id="messageaction">MessageAction</h2>
+        <p>Таблица: <em><strong>message_actions</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>id</td>
+                <td>integer</td>
+                <td>ID действия</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>string</td>
+                <td>Ключ локализации</td>
+            </tr>
+            </tbody>
+        </table><h3 id="первоначальные-значения">Первоначальные значения</h3>
+
+        <table>
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>user_left</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>user_joined</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>user_kicked</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>title_changed</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>photo_changed</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>photo_removed</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>message_pinned</td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>message_unpinned</td>
+            </tr>
+            </tbody>
+        </table><h2 id="message">Message</h2>
+        <p>Таблица: <em><strong>messages</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>uuid</td>
+                <td>string</td>
+                <td>UUID сообщения</td>
+            </tr>
+            <tr>
+                <td>from</td>
+                <td>integer</td>
+                <td>ID отправителя</td>
+            </tr>
+            <tr>
+                <td>conversation</td>
+                <td>string</td>
+                <td>UUID беседы</td>
+            </tr>
+            <tr>
+                <td>edited</td>
+                <td>boolean</td>
+                <td>Изменено ли это сообщение?<br><em>По умолчанию: false</em></td>
+            </tr>
+            <tr>
+                <td>edited_uuid</td>
+                <td>string?</td>
+                <td>UUID изменённого сообщения</td>
+            </tr>
+            <tr>
+                <td>text</td>
+                <td>string?</td>
+                <td>Текст сообщения<br>Может быть <em>null</em>, если есть как минимум<br>одно вложение или пересланное сообщение<br>или сообщение является действием</td>
+            </tr>
+            <tr>
+                <td>forwarded</td>
+                <td>string?</td>
+                <td>Список пересланных сообщений<br>UUID через запятую (до 15 сообщений)</td>
+            </tr>
+            <tr>
+                <td>attachments</td>
+                <td>string?</td>
+                <td>Список вложений<br>UUID через запятую (до 5 вложений)</td>
+            </tr>
+            <tr>
+                <td>action</td>
+                <td>integer</td>
+                <td>ID действия</td>
+            </tr>
+            <tr>
+                <td>message</td>
+                <td>string?</td>
+                <td>UUID закреплённого/откреплённого сообщения</td>
+            </tr>
+            <tr>
+                <td>member</td>
+                <td>integer?</td>
+                <td>ID пользователя, над которым совершается действие</td>
+            </tr>
+            <tr>
+                <td>title</td>
+                <td>string?</td>
+                <td>Новое название беседы</td>
+            </tr>
+            <tr>
+                <td>photo</td>
+                <td>string</td>
+                <td>UUID новой обложки беседы</td>
+            </tr>
+            <tr>
+                <td>deleted_at</td>
+                <td>timestamp</td>
+                <td>Дата удаления записи из БД</td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="systemstatistics">SystemStatistics</h2>
+        <p>Таблица: <em><strong>system</strong></em><br>
+            Статистика работы системы. Нужна для построения графиков в административной панели и отслеживания работы. Все данные с типом <code>integer</code> имеют значение по умолчанию: 0.</p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>id</td>
+                <td>integer</td>
+                <td>ID записи</td>
+            </tr>
+            <tr>
+                <td>date</td>
+                <td>date</td>
+                <td>День логирования</td>
+            </tr>
+            <tr>
+                <td>bytes_recieved</td>
+                <td>integer</td>
+                <td>Получено байт (вложения)</td>
+            </tr>
+            <tr>
+                <td>total_messages</td>
+                <td>integer</td>
+                <td>Количество обработанных сообщений</td>
+            </tr>
+            <tr>
+                <td>attachments_recieved</td>
+                <td>integer</td>
+                <td>Загружено вложений</td>
+            </tr>
+            <tr>
+                <td>api_requests</td>
+                <td>integer</td>
+                <td>Получено запросов API</td>
+            </tr>
+            <tr>
+                <td>api_respond_errors</td>
+                <td>integer</td>
+                <td>Количество отправленных ошибок API</td>
+            </tr>
+            <tr>
+                <td>api_crit_errors</td>
+                <td>integer</td>
+                <td>Количество ошибок API</td>
+            </tr>
+            <tr>
+                <td>new_sessions</td>
+                <td>integer</td>
+                <td>Количество новых сессий</td>
+            </tr>
+            <tr>
+                <td>new_photos</td>
+                <td>integer</td>
+                <td>Количество новых фотографий профиля/беседы</td>
+            </tr>
+            <tr>
+                <td>bytes_photos</td>
+                <td>integer</td>
+                <td>Получено байт (фотографии)</td>
+            </tr>
+            <tr>
+                <td>new_users</td>
+                <td>integer</td>
+                <td>Количество новых пользователей</td>
+            </tr>
+            <tr>
+                <td>banned_users</td>
+                <td>integer</td>
+                <td>Количество заблокированных (модератором) пользователей</td>
+            </tr>
+            <tr>
+                <td>total_users</td>
+                <td>integer</td>
+                <td>Количество пользователей в системе</td>
+            </tr>
+            <tr>
+                <td>active_users</td>
+                <td>integer</td>
+                <td>Не заблокированных пользователей в системе</td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="reportreason">ReportReason</h2>
+        <p>Таблица: <em><strong>report_reasons</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>id</td>
+                <td>integer</td>
+                <td>ID причины</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>string</td>
+                <td>Ключ локализации</td>
+            </tr>
+            </tbody>
+        </table><h3 id="первоначальные-значения-1">Первоначальные значения</h3>
+
+        <table>
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>spam</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>nudity</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>suicidal</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>verbal_abuse</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>scam</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>other</td>
+            </tr>
+            </tbody>
+        </table><h2 id="messagereport">MessageReport</h2>
+        <p>Таблица: <em><strong>message_reports</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>id</td>
+                <td>integer</td>
+                <td>ID репорта</td>
+            </tr>
+            <tr>
+                <td>message</td>
+                <td>string</td>
+                <td>UUID сообщения</td>
+            </tr>
+            <tr>
+                <td>reason</td>
+                <td>integer</td>
+                <td>Причина репорта</td>
+            </tr>
+            <tr>
+                <td>text</td>
+                <td>string?</td>
+                <td>Дополнительное сообщение</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>enum</td>
+                <td>Статус репорта<br><em>(under_review, declined, user_banned, message_deleted)</em></td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="userreport">UserReport</h2>
+        <p>Таблица: <em><strong>user_reports</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>id</td>
+                <td>integer</td>
+                <td>ID репорта</td>
+            </tr>
+            <tr>
+                <td>user</td>
+                <td>string</td>
+                <td>ID пользователя</td>
+            </tr>
+            <tr>
+                <td>reason</td>
+                <td>integer</td>
+                <td>Причина репорта</td>
+            </tr>
+            <tr>
+                <td>text</td>
+                <td>string?</td>
+                <td>Дополнительное сообщение</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>enum</td>
+                <td>Статус репорта.<br><em>(under_review, declined, user_banned, message_deleted)</em></td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="banrecord">BanRecord</h2>
+        <p>Таблица: <em><strong>ban_records</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>id</td>
+                <td>integer</td>
+                <td>ID записи</td>
+            </tr>
+            <tr>
+                <td>report</td>
+                <td>integer?</td>
+                <td>ID репорта</td>
+            </tr>
+            <tr>
+                <td>report_type</td>
+                <td>enum?</td>
+                <td>Тип репорта<br><em>(message, user)</em></td>
+            </tr>
+            <tr>
+                <td>reason</td>
+                <td>integer</td>
+                <td>Причина репорта</td>
+            </tr>
+            <tr>
+                <td>text</td>
+                <td>string?</td>
+                <td>Дополнение</td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="officialapp">OfficialApp</h2>
+        <p>Таблица: <em><strong>official_apps</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>id</td>
+                <td>integer</td>
+                <td>ID приложения</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>string</td>
+                <td>Название</td>
+            </tr>
+            <tr>
+                <td>developer</td>
+                <td>string</td>
+                <td>Имя разработчика</td>
+            </tr>
+            <tr>
+                <td>developer_id</td>
+                <td>integer?</td>
+                <td>ID разработчика в системе</td>
+            </tr>
+            <tr>
+                <td>verified</td>
+                <td>boolean</td>
+                <td>Официальное приложение?<br><em>По умолчанию: false</em></td>
+            </tr>
+            <tr>
+                <td>secret_code</td>
+                <td>string</td>
+                <td>Секретный код для проверки</td>
+            </tr>
+            </tbody>
+        </table><h1 id="отношения">Отношения</h1>
+        <p>Описание всех отношений между таблицами и моделями</p>
+        <h2 id="контакты">Контакты</h2>
+        <p>Таблица: <em><strong>contacts</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>issuer</td>
+                <td>integer</td>
+                <td>ID пользователя 1</td>
+            </tr>
+            <tr>
+                <td>friend</td>
+                <td>integer</td>
+                <td>ID пользователя 2</td>
+            </tr>
+            <tr>
+                <td>status</td>
+                <td>enum</td>
+                <td>Статус контакта<br><em>(pending, approved)</em></td>
+            </tr>
+            <tr>
+                <td>text</td>
+                <td>string?</td>
+                <td>Сообщение</td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h2 id="чёрный-список">Чёрный список</h2>
+        <p>Таблица: <em><strong>blacklist</strong></em></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Колонка</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>user</td>
+                <td>integer</td>
+                <td>ID пользователя</td>
+            </tr>
+            <tr>
+                <td>blacklisted</td>
+                <td>integer</td>
+                <td>ID заблокированного</td>
+            </tr>
+            <tr>
+                <td>created_at</td>
+                <td>timestamp</td>
+                <td>Дата создания записи в БД</td>
+            </tr>
+            <tr>
+                <td>updated_at</td>
+                <td>timestamp</td>
+                <td>Дата обновления записи в БД</td>
+            </tr>
+            </tbody>
+        </table><h1 id="битовые-маски">Битовые маски</h1>
+        <blockquote>
+            <p><strong>Битовая маска</strong> — определённые данные, которые используются для маскирования — выбора отдельных <a href="https://ru.wikipedia.org/wiki/%D0%91%D0%B8%D1%82" title="Бит">битов</a> или <a href="https://ru.wikipedia.org/wiki/%D0%91%D0%B8%D1%82%D0%BE%D0%B2%D0%BE%D0%B5_%D0%BF%D0%BE%D0%BB%D0%B5" title="Битовое поле">полей из нескольких битов</a> из <a href="https://ru.wikipedia.org/wiki/%D0%94%D0%B2%D0%BE%D0%B8%D1%87%D0%BD%D0%B0%D1%8F_%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0_%D1%81%D1%87%D0%B8%D1%81%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F" title="Двоичная система счисления">двоичной</a> строки или числа.</p>
+        </blockquote>
+        <h2 id="маска-настроек-приватности-пользователя">Маска настроек приватности пользователя</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Разрешение</th>
+                <th>Маска</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>open_messaging</td>
+                <td>+1<br>(1&nbsp;&lt;&lt;&nbsp;0)</td>
+                <td>Открыты личные сообщения<br>Если есть, то пользователю могут писать пользователи не из контактов</td>
+            </tr>
+            <tr>
+                <td>hidden_avatar</td>
+                <td>+2<br>(1&nbsp;&lt;&lt;&nbsp;1)</td>
+                <td>Аватар скрыт<br>Если есть, то пользователи не в контактах не смогут увидеть аватар</td>
+            </tr>
+            <tr>
+                <td>last_seen</td>
+                <td>+4<br>(1&nbsp;&lt;&lt;&nbsp;2)</td>
+                <td>Скрыто последнее посещение<br>Если есть, то пользователи не в контактах не смогут увидеть дату последнего посещения</td>
+            </tr>
+            <tr>
+                <td>group_add</td>
+                <td>+8<br>(1&nbsp;&lt;&lt;&nbsp;3)</td>
+                <td>Возможность добавлять пользователя в группы<br>Если есть, то пользователи не в контактах смогут добавлять пользователя в свои группы и каналы</td>
+            </tr>
+            </tbody>
+        </table><h2 id="маска-настроек-доступа-пользователя-в-беседах">Маска настроек доступа пользователя в беседах</h2>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Разрешение</th>
+                <th>Маска</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>full_access</td>
+                <td>+1<br>(1&nbsp;&lt;&lt;&nbsp;0)</td>
+                <td>Полный доступ</td>
+            </tr>
+            <tr>
+                <td>add_access</td>
+                <td>+2<br>(1&nbsp;&lt;&lt;&nbsp;1)</td>
+                <td>Может добавлять права другим участникам, но не более своих, исключая add_access</td>
+            </tr>
+            <tr>
+                <td>delete_messages</td>
+                <td>+4<br>(1&nbsp;&lt;&lt;&nbsp;2)</td>
+                <td>Может удалять сообщения других участников</td>
+            </tr>
+            <tr>
+                <td>pin_messages</td>
+                <td>+8<br>(1&nbsp;&lt;&lt;&nbsp;3)</td>
+                <td>Может управлять закреплёнными сообщениями</td>
+            </tr>
+            <tr>
+                <td>edit_title</td>
+                <td>+16<br>(1&nbsp;&lt;&lt;&nbsp;4)</td>
+                <td>Может управлять названием беседы</td>
+            </tr>
+            <tr>
+                <td>edit_photo</td>
+                <td>+32<br>(1&nbsp;&lt;&lt;&nbsp;5)</td>
+                <td>Может управлять обложкой беседы</td>
+            </tr>
+            <tr>
+                <td>kick_users</td>
+                <td>+64<br>(1&nbsp;&lt;&lt;&nbsp;6)</td>
+                <td>Может исключать пользователей из беседы</td>
+            </tr>
+            <tr>
+                <td>invite_users</td>
+                <td>+128<br>(1&nbsp;&lt;&lt;&nbsp;7)</td>
+                <td>Может приглашать пользователей в беседу</td>
+            </tr>
+            <tr>
+                <td>invite_links</td>
+                <td>+256<br>(1&nbsp;&lt;&lt;&nbsp;8)</td>
+                <td>Может управлять ссылками-приглашениями</td>
+            </tr>
+            </tbody>
+        </table><h1 id="структура-внутреннего-хранилища">Структура внутреннего хранилища</h1>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Расположение</th>
+                <th>Описание</th>
+                <th>Данные</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>/attachments</td>
+                <td>Общая директория для вложений</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>/attachments/photos</td>
+                <td>Директория для вложений-фотографий</td>
+                <td>photo<code>&lt;owner&gt;</code>_<code>&lt;uuid&gt;</code>.jpg</td>
+            </tr>
+            <tr>
+                <td>/attachments/docs</td>
+                <td>Директория для вложений-документов</td>
+                <td>doc<code>&lt;owner&gt;</code>_<code>&lt;uuid&gt;</code></td>
+            </tr>
+            <tr>
+                <td>/attachments/voices</td>
+                <td>Директория для голосовых сообщений</td>
+                <td>voice<code>&lt;owner&gt;</code>_<code>&lt;uuid&gt;</code>.ogg</td>
+            </tr>
+            <tr>
+                <td>/photos</td>
+                <td>Общая директория для фотографий пользователей и обложек бесед</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>/photos/profile</td>
+                <td>Директория для вложений-фотографий</td>
+                <td>profile<code>&lt;uuid&gt;</code>_<code>&lt;size&gt;</code>.jpg</td>
+            </tr>
+            <tr>
+                <td>/photos/conversation</td>
+                <td>Директория для вложений-фотографий</td>
+                <td>conversation<code>&lt;uuid&gt;</code>_<code>&lt;size&gt;</code>.jpg</td>
+            </tr>
+            </tbody>
+        </table><h1 id="система-обработки-входных-файлов">Система обработки входных файлов</h1>
+        <h2 id="вложения-фотографии">Вложения-фотографии</h2>
+        <p>Фотографии сжимаются и размеры уменьшаются до пропорционально максимальных <strong>3840x2160</strong> с каждой стороны. Выходной формат файла - JPEG. Максимальный объём файла для загрузки — <strong>25 МБайт</strong>.</p>
+        <h2 id="голосовые-сообщения">Голосовые сообщения</h2>
+        <p>Голосовые сообщения сжимаются и сохраняются в формате OGG. После сохранения идёт обработка пиков, для генерации графического представления. Максимальная длительность записи — <strong>10 минут</strong>.</p>
+        <h2 id="вложения-документы">Вложения-документы</h2>
+        <p>Документы никак не обрабатываются и сохраняются в первоначальным виде. Расширение документа извлекается из MIME-типа файла. Документ сохраняется на диск без расширения. Максимальный объём файла для загрузки — <strong>100 МБайт</strong>.</p>
+        <h2 id="фотографии-пользователей-и-обложек-бесед">Фотографии пользователей и обложек бесед</h2>
+        <p>Фотографии загружаются на сервер уже с пропорциями 1:1. Изображения сжимаются и генерируются всевозможные размеры для эффективного использования на стороне клиента. Размеры: <strong>50x50</strong>, <strong>150x150</strong>, <strong>512x512</strong>, <strong>1024x1024</strong> и оригинальный размер. Максимальный объём файла для загрузки — <strong>10 МБайт</strong>.</p>
+        <h1 id="о-системе-управления-сообщениями">О системе управления сообщениями</h1>
+        <h2 id="удаление">Удаление</h2>
+        <p>Для удаления сообщения используется «мягкое удаление». В БД есть колонка <code>deleted_at</code>, куда заносится дата удаления. Удалённые сообщения не показываются в общем логе сообщений. Сообщение возможно восстановить, если знать его UUID. Восстановить сообщение может модератор или отправитель (в течении 24 часов).</p>
+        <h2 id="редактирование">Редактирование</h2>
+        <p>При редактировании создается новое сообщение, где <code>created_at</code> совпадает с оригинальным сообщением, которое проходит процедуру «мягкого удаления», поле <code>edited=true</code>, а <code>edited_uuid</code> получает UUID нового сообщения. Редактирование доступно в течении 24 часов с даты создания.</p>
+        <h1 id="точки-доступа-к-api">Точки доступа к API</h1>
+        <p>Единая точка доступа к API — <code>/api/</code><br>
+            Для просмотра информации о API и IP-адресе клиента: <code>/api/info</code><br>
+            При попытки обратится к корню, запрос будет переадресован на <code>/api/info</code><br>
+            Значения типа <code>boolean</code> принимаются в формате флага: <code>1</code> или <code>0</code></p>
+        <h2 id="ошибки-при-использовании-api">Ошибки при использовании API</h2>
+        <p>В данный момент разрабатывается единый формат возврата ошибок. В будущем здесь появится единая схема ошибок, кодов и их решений.</p>
+        <h2 id="авторизация">Авторизация</h2>
+        <h3 id="процесс-авторизации">Процесс авторизации</h3>
+        <p><code>POST /api/auth</code><br>
+            При помощи данного метода можно совершить авторизацию, ответом будет ключ доступа.</p>
+        <h4 id="входные-данные">Входные данные:</h4>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>login</td>
+                <td>string</td>
+                <td>Логин</td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td>string</td>
+                <td>Пароль</td>
+            </tr>
+            <tr>
+                <td>appinfo</td>
+                <td>string</td>
+                <td>Информация о приложении, <br> от которого совершается вход</td>
+            </tr>
+            </tbody>
+        </table><h4 id="возвращаемые-данные">Возвращаемые данные:</h4>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>token</td>
+                <td>string(64)</td>
+                <td>Токен</td>
+            </tr>
+            </tbody>
+        </table><h3 id="использование-токена">Использование токена</h3>
+        <p>Для авторизации через токен передайте его вместе с запросом в заголовке <code>Authorization: Bearer &lt;token&gt;</code>. На данный момент в API  существуют два метода не требующие авторизации: авторизация и регистрация.</p>
+        <h2 id="регистрация">Регистрация</h2>
+        <p>Регистрация в данный момент не предусмотрена, добавление новых пользователей производится через административную панель. Планируется создание приглашений для регистрации.</p>
+        <h2 id="пользователь">Пользователь</h2>
+        <h3 id="получение">Получение</h3>
+        <p><code>GET /api/users.get</code></p>
+        <h4 id="входные-данные-1">Входные данные:</h4>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>user_ids</td>
+                <td>string</td>
+                <td>Перечисленные через запятую идентификаторы пользователей или их домены<br>Количество элементов должно составлять  <strong>не более 1000</strong></td>
+            </tr>
+            <tr>
+                <td>fields</td>
+                <td>string</td>
+                <td>Список дополнительных полей, которые необходимо вернуть<br>Доступные поля: <em>domain, photo_50, photo_150, photo_512, photo_1024, photo_orig, last_seen, online, verified, in_contacts, blacklisted_by_me, blacklisted</em></td>
+            </tr>
+            </tbody>
+        </table><h4 id="возвращаемые-данные-1">Возвращаемые данные:</h4>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>count</td>
+                <td>integer</td>
+                <td>Количество возвращаемых объектов</td>
+            </tr>
+            <tr>
+                <td>items</td>
+                <td>array</td>
+                <td>Массив из объекта Пользователь</td>
+            </tr>
+            </tbody>
+        </table><h2 id="контакты-1">Контакты</h2>
+        <h3 id="получение-контактов">Получение контактов</h3>
+        <p><code>GET /api/contacts.get</code></p>
+        <h4 id="входные-данные-2">Входные данные:</h4>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>count</td>
+                <td>integer<br><em>По умолчанию: 1000</em>*</td>
+                <td>Количество друзей, которое нужно вернуть</td>
+            </tr>
+            <tr>
+                <td>sort</td>
+                <td>string</td>
+                <td>Порядок, в котором нужно вернуть список друзей. Допустимые значения:<br><em>random, name, default</em></td>
+            </tr>
+            <tr>
+                <td>offset</td>
+                <td>integer</td>
+                <td>Смещение, необходимое для выборки определенного подмножества друзей</td>
+            </tr>
+            <tr>
+                <td>fields</td>
+                <td>string</td>
+                <td>Список дополнительных полей, которые необходимо вернуть<br>Доступные поля: <em>domain, photo_50, photo_150, photo_512, photo_1024, photo_orig, last_seen, online</em></td>
+            </tr>
+            </tbody>
+        </table><h4 id="возвращаемые-данные-2">Возвращаемые данные:</h4>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>count</td>
+                <td>integer</td>
+                <td>Количество возвращаемых объектов</td>
+            </tr>
+            <tr>
+                <td>items</td>
+                <td>array</td>
+                <td>Массив из объекта Пользователь</td>
+            </tr>
+            </tbody>
+        </table><h3 id="управление-заявками">Управление заявками</h3>
+        <p><code>GET /api/contacts.add</code></p>
+        <h4 id="входные-данные-3">Входные данные:</h4>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>user_id</td>
+                <td>integer</td>
+                <td>Идентификатор пользователя, которому необходимо отправить заявку, либо заявку от которого необходимо одобрить</td>
+            </tr>
+            <tr>
+                <td>text</td>
+                <td>string</td>
+                <td>Текст сопроводительного сообщения для заявки на добавление в друзья. Максимальная длина сообщения — <strong>500</strong> символов.</td>
+            </tr>
+            <tr>
+                <td>decline</td>
+                <td>boolean<br>По умолчанию: <em>false</em></td>
+                <td>Если нужно отклонить входящую заявку или удалить из контактов</td>
+            </tr>
+            </tbody>
+        </table><h4 id="возвращаемые-данные-3">Возвращаемые данные:</h4>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>status</td>
+                <td>integer</td>
+                <td>Статус отправки заявки<br>Статусы:<br>1 — Заявка отправлена <br> 2 — Заявка на добавление одобрена <br> 3 — Заявка на добавление в друзья отклонена <br> 4 — Заявка отправлена повторно <br> 5 — Вы уже в контактах <br> 6 — Пользователь удалён из контактов</td>
+            </tr>
+            </tbody>
+        </table><h3 id="получение-заявок">Получение заявок</h3>
+        <p><code>GET /api/contacts.requests</code></p>
+        <h4 id="входные-данные-4">Входные данные:</h4>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>count</td>
+                <td>integer<br><em>По умолчанию: 1000</em>*</td>
+                <td>Количество друзей, которое нужно вернуть</td>
+            </tr>
+            <tr>
+                <td>sort</td>
+                <td>string</td>
+                <td>Порядок, в котором нужно вернуть список друзей. Допустимые значения:<br><em>random, name, default</em></td>
+            </tr>
+            <tr>
+                <td>offset</td>
+                <td>integer</td>
+                <td>Смещение, необходимое для выборки определенного подмножества друзей</td>
+            </tr>
+            <tr>
+                <td>fields</td>
+                <td>string</td>
+                <td>Список дополнительных полей, которые необходимо вернуть<br>Доступные поля: <em>domain, photo_50, photo_150, photo_512, photo_1024, photo_orig, last_seen, online</em></td>
+            </tr>
+            <tr>
+                <td>extended</td>
+                <td>boolean</td>
+                <td>Определяет, требуется ли возвращать в ответе сообщения от пользователей, подавших заявку на добавление в друзья</td>
+            </tr>
+            <tr>
+                <td>out</td>
+                <td>boolean</td>
+                <td>0 — возвращать полученные заявки (по умолчанию), 1 — возвращать отправленные пользователем заявки</td>
+            </tr>
+            </tbody>
+        </table><h4 id="возвращаемые-данные-4">Возвращаемые данные:</h4>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Поле</th>
+                <th>Тип данных</th>
+                <th>Описание</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>count</td>
+                <td>integer</td>
+                <td>Количество возвращаемых объектов</td>
+            </tr>
+            <tr>
+                <td>items</td>
+                <td>array</td>
+                <td>Массив из объекта Пользователь</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
