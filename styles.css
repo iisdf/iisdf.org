@@ -1,0 +1,84 @@
+html, body {
+    font-family: 'Roboto', sans-serif;
+    padding: 2em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+    margin-bottom: 1.5em;
+}
+
+b, a {
+    color: #2787f5;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #66a8ff;
+}
+
+html, body, main {
+    margin: 0;
+    padding: 0 0;
+    width: 100%;
+    height: 100%;
+}
+
+header {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+header, section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.heart {
+    display: inline-block;
+    width: auto;
+    height: .85em;
+}
+
+.iisdf-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px 20px;
+    margin-bottom: 3em;
+}
+
+@media screen and (max-width: 1024px) {
+    .iisdf-cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px 20px;
+        margin-bottom: 3em;
+    }
+}
+
+.iisdf-cards .iisdf-card {
+    width: 100%;
+    height: 100%;
+    border-radius: 1em;
+    background: right -20px bottom -10px no-repeat url("icon.svg"), #2787f5;
+    background-size: 150px, contain;
+    color: #ffffff;
+    padding: 35px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.iisdf-cards .iisdf-card .iisdf-card-header img {
+    display: inline-block;
+    width: 80%;
+}
+
+.iisdf-cards .iisdf-card .iisdf-card-text {
+    margin: 0;
+}
