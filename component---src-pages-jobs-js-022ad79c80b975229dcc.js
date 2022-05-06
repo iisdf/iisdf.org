@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunk_lazytechwork_iisdf=self.webpackChunk_lazytechwork_iisdf||[]).push([[841],{5033:function(e,t,a){a.r(t);var l=a(7294),c=a(6170);t.default=function(){return l.createElement(c.Z,null,l.createElement("h1",{className:"page-header"},"Вакансии"),l.createElement("p",{className:"text-2xl text-gray-500"},"Нет активных вакансий"))}}}]);
-//# sourceMappingURL=component---src-pages-jobs-js-022ad79c80b975229dcc.js.map
